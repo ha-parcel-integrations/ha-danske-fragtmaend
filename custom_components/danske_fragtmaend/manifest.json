@@ -1,0 +1,19 @@
+{
+  "domain": "danske_fragtmaend",
+  "name": "Danske Fragtm\u00e6nd",
+  "categories": [
+    "productivity_information"
+  ],
+  "codeowners": [
+    "@peter-mdf"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/ha-parcel-integrations/ha-danske-fragtmaend",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/ha-parcel-integrations/ha-danske-fragtmaend/issues",
+  "quality_scale": "silver",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.9.0"
+}

@@ -1,0 +1,155 @@
+{
+  "title": "Danske Fragtmænd",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Danske Fragtmænd",
+        "description": "Danske Fragtmænd tracking needs no account — the hub is created right away. Add consignments afterwards via the integration options or the `danske_fragtmaend.track_parcel` service."
+      }
+    },
+    "abort": {
+      "already_configured": "Danske Fragtmænd is already set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Danske Fragtmænd options",
+        "menu_options": {
+          "parcels": "Parcels",
+          "settings": "Settings"
+        },
+        "sections": {
+          "parcels": {
+            "name": "Parcels",
+            "data": {
+              "add": "Add a parcel",
+              "remove": "Remove parcels"
+            },
+            "data_description": {
+              "add": "Paste the Danske Fragtmænd tracking link, or enter the consignment number. You find both in the carrier's text message or e-mail."
+            }
+          },
+          "delivered": {
+            "name": "Delivered parcels",
+            "data": {
+              "delivered_filter_type": "Filter by",
+              "delivered_filter_amount": "Amount"
+            },
+            "data_description": {
+              "delivered_filter_type": "Show delivered parcels from the last X days, or limit to the X most recent.",
+              "delivered_filter_amount": "Number of days or parcels to show."
+            }
+          },
+          "history": {
+            "name": "Parcel history",
+            "data": {
+              "include_history": "Include status history"
+            },
+            "data_description": {
+              "include_history": "Add a per-parcel history attribute listing each status update (timestamp, status, original text). Off by default."
+            }
+          }
+        }
+      },
+      "parcels": {
+        "title": "Manage parcels",
+        "data": {
+          "tracking_codes": "Tracking links or numbers"
+        },
+        "description": "One consignment per line. Paste the tracking link from the Danske Fragtmænd text message or e-mail, or enter the consignment number, optionally followed by `/` and the key from that link. With the key you get the full record; the number alone gives a shorter one. The key is case-sensitive.",
+        "data_description": {
+          "tracking_codes": "A tracking link (https://trace.fragt.dk/#/trackTrace/…), NUMBER/KEY, or a consignment number."
+        }
+      },
+      "settings": {
+        "title": "Settings",
+        "data": {
+          "delivered_filter_type": "Delivered parcels: filter by",
+          "delivered_filter_amount": "Delivered parcels: amount",
+          "include_history": "Include status history"
+        }
+      }
+    },
+    "error": {
+      "invalid_tracking_code": "That does not look like a Danske Fragtmænd consignment number.",
+      "unsupported_link": "Only the tracking link that opens with #/trackTrace/ is supported. Paste that link, or enter the consignment number.",
+      "not_recognised": "Danske Fragtmænd does not recognise that consignment number or key.",
+      "cannot_connect": "Could not reach Danske Fragtmænd. Try again later.",
+      "already_tracked": "That parcel is already being tracked."
+    }
+  },
+  "selector": {
+    "delivered_filter_type": {
+      "options": {
+        "days": "Days",
+        "parcels": "Number of parcels"
+      }
+    }
+  },
+  "services": {
+    "track_parcel": {
+      "name": "Track parcel",
+      "description": "Start tracking a consignment by its Danske Fragtmænd tracking link or consignment number.",
+      "fields": {
+        "tracking_code": {
+          "name": "Tracking link or number",
+          "description": "The tracking link from the carrier's message, or the consignment number."
+        },
+        "key": {
+          "name": "Key",
+          "description": "Optional: the key from the tracking link (case-sensitive). Not needed when you paste the whole link. Home Assistant records the data of every service call, key included; add the consignment through the integration options if you don't want that."
+        }
+      }
+    },
+    "untrack_parcel": {
+      "name": "Untrack parcel",
+      "description": "Stop tracking a consignment by its Danske Fragtmænd tracking link or consignment number.",
+      "fields": {
+        "tracking_code": {
+          "name": "Tracking link or number",
+          "description": "The tracking link or consignment number to stop tracking."
+        }
+      }
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "parcel_registered": "A parcel was registered",
+      "parcel_status_changed": "A parcel's status changed",
+      "parcel_delivered": "A parcel was delivered",
+      "parcel_delivery_time_changed": "A parcel's expected delivery time changed"
+    }
+  },
+  "entity": {
+    "button": {
+      "refresh": {
+        "name": "Refresh"
+      }
+    },
+    "calendar": {
+      "deliveries": {
+        "name": "Deliveries"
+      }
+    },
+    "sensor": {
+      "incoming_parcels": {
+        "name": "Incoming parcels",
+        "unit_of_measurement": "parcels"
+      },
+      "next_delivery": {
+        "name": "Next delivery"
+      },
+      "delivered_parcels": {
+        "name": "Delivered parcels",
+        "unit_of_measurement": "parcels"
+      },
+      "last_update": {
+        "name": "Last successful update"
+      },
+      "parcel": {
+        "name": "Parcel {barcode}"
+      }
+    }
+  }
+}

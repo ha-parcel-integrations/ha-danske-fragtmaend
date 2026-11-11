@@ -1,0 +1,155 @@
+{
+  "title": "Danske Fragtmænd",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Opsæt Danske Fragtmænd",
+        "description": "Sporing hos Danske Fragtmænd kræver ingen konto — hubben oprettes med det samme. Tilføj forsendelser bagefter via integrationens indstillinger eller tjenesten `danske_fragtmaend.track_parcel`."
+      }
+    },
+    "abort": {
+      "already_configured": "Danske Fragtmænd er allerede sat op."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Danske Fragtmænd-indstillinger",
+        "menu_options": {
+          "parcels": "Pakker",
+          "settings": "Indstillinger"
+        },
+        "sections": {
+          "parcels": {
+            "name": "Pakker",
+            "data": {
+              "add": "Tilføj en pakke",
+              "remove": "Fjern pakker"
+            },
+            "data_description": {
+              "add": "Indsæt sporingslinket fra Danske Fragtmænd, eller indtast fragtbrevsnummeret. Du finder begge i fragtfirmaets sms eller e-mail."
+            }
+          },
+          "delivered": {
+            "name": "Leverede pakker",
+            "data": {
+              "delivered_filter_type": "Filtrer efter",
+              "delivered_filter_amount": "Antal"
+            },
+            "data_description": {
+              "delivered_filter_type": "Vis leverede pakker fra de sidste X dage, eller begræns til de X seneste.",
+              "delivered_filter_amount": "Antal dage eller pakker der skal vises."
+            }
+          },
+          "history": {
+            "name": "Pakkehistorik",
+            "data": {
+              "include_history": "Inkluder statushistorik"
+            },
+            "data_description": {
+              "include_history": "Tilføj en historikattribut pr. pakke, der viser hver statusopdatering (tidsstempel, status, originaltekst). Slået fra som standard."
+            }
+          }
+        }
+      },
+      "parcels": {
+        "title": "Administrer pakker",
+        "data": {
+          "tracking_codes": "Sporingslinks eller numre"
+        },
+        "description": "Én forsendelse pr. linje. Indsæt sporingslinket fra Danske Fragtmænds sms eller e-mail, eller indtast fragtbrevsnummeret, eventuelt efterfulgt af `/` og nøglen fra linket. Med nøglen får du alle oplysninger; med nummeret alene en kortere udgave. Der skelnes mellem store og små bogstaver i nøglen.",
+        "data_description": {
+          "tracking_codes": "Et sporingslink (https://trace.fragt.dk/#/trackTrace/…), NUMMER/NØGLE eller et fragtbrevsnummer."
+        }
+      },
+      "settings": {
+        "title": "Indstillinger",
+        "data": {
+          "delivered_filter_type": "Leverede pakker: filtrer efter",
+          "delivered_filter_amount": "Leverede pakker: antal",
+          "include_history": "Inkluder statushistorik"
+        }
+      }
+    },
+    "error": {
+      "invalid_tracking_code": "Det ligner ikke et fragtbrevsnummer fra Danske Fragtmænd.",
+      "unsupported_link": "Kun sporingslinket med #/trackTrace/ understøttes. Indsæt det link, eller indtast fragtbrevsnummeret.",
+      "not_recognised": "Danske Fragtmænd genkender ikke det fragtbrevsnummer eller den nøgle.",
+      "cannot_connect": "Kunne ikke få forbindelse til Danske Fragtmænd. Prøv igen senere.",
+      "already_tracked": "Den pakke spores allerede."
+    }
+  },
+  "selector": {
+    "delivered_filter_type": {
+      "options": {
+        "days": "Dage",
+        "parcels": "Antal pakker"
+      }
+    }
+  },
+  "services": {
+    "track_parcel": {
+      "name": "Spor pakke",
+      "description": "Begynd at spore en forsendelse via sporingslinket eller fragtbrevsnummeret fra Danske Fragtmænd.",
+      "fields": {
+        "tracking_code": {
+          "name": "Sporingslink eller nummer",
+          "description": "Sporingslinket fra fragtfirmaets besked, eller fragtbrevsnummeret."
+        },
+        "key": {
+          "name": "Nøgle",
+          "description": "Valgfrit: nøglen fra sporingslinket (der skelnes mellem store og små bogstaver). Ikke nødvendig, når du indsætter hele linket. Home Assistant gemmer dataene fra hvert tjenestekald, også nøglen; tilføj forsendelsen via integrationens indstillinger, hvis du ikke ønsker det."
+        }
+      }
+    },
+    "untrack_parcel": {
+      "name": "Stop sporing af pakke",
+      "description": "Stop med at spore en forsendelse via sporingslinket eller fragtbrevsnummeret fra Danske Fragtmænd.",
+      "fields": {
+        "tracking_code": {
+          "name": "Sporingslink eller nummer",
+          "description": "Sporingslinket eller fragtbrevsnummeret, der ikke længere skal spores."
+        }
+      }
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "parcel_registered": "En pakke blev registreret",
+      "parcel_status_changed": "En pakkes status ændrede sig",
+      "parcel_delivered": "En pakke blev leveret",
+      "parcel_delivery_time_changed": "En pakkes forventede leveringstid ændrede sig"
+    }
+  },
+  "entity": {
+    "button": {
+      "refresh": {
+        "name": "Opdater"
+      }
+    },
+    "calendar": {
+      "deliveries": {
+        "name": "Leveringer"
+      }
+    },
+    "sensor": {
+      "incoming_parcels": {
+        "name": "Indkommende pakker",
+        "unit_of_measurement": "pakker"
+      },
+      "next_delivery": {
+        "name": "Næste levering"
+      },
+      "delivered_parcels": {
+        "name": "Leverede pakker",
+        "unit_of_measurement": "pakker"
+      },
+      "last_update": {
+        "name": "Sidste vellykkede opdatering"
+      },
+      "parcel": {
+        "name": "Pakke {barcode}"
+      }
+    }
+  }
+}

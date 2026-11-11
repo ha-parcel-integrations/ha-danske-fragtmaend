@@ -1,0 +1,155 @@
+{
+  "title": "Danske Fragtmænd",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Danske Fragtmænd instellen",
+        "description": "Danske Fragtmænd-tracking heeft geen account nodig — de hub wordt direct aangemaakt. Zendingen voeg je daarna toe via de integratie-opties of de service `danske_fragtmaend.track_parcel`."
+      }
+    },
+    "abort": {
+      "already_configured": "Danske Fragtmænd is al ingesteld."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Danske Fragtmænd-opties",
+        "menu_options": {
+          "parcels": "Pakketten",
+          "settings": "Instellingen"
+        },
+        "sections": {
+          "parcels": {
+            "name": "Pakketten",
+            "data": {
+              "add": "Pakket toevoegen",
+              "remove": "Pakketten verwijderen"
+            },
+            "data_description": {
+              "add": "Plak de trackinglink van Danske Fragtmænd, of voer het zendingsnummer in. Je vindt beide in de sms of e-mail van de vervoerder."
+            }
+          },
+          "delivered": {
+            "name": "Bezorgde pakketten",
+            "data": {
+              "delivered_filter_type": "Filteren op",
+              "delivered_filter_amount": "Aantal"
+            },
+            "data_description": {
+              "delivered_filter_type": "Toon bezorgde pakketten van de laatste X dagen, of beperk tot de X meest recente.",
+              "delivered_filter_amount": "Aantal dagen of pakketten om te tonen."
+            }
+          },
+          "history": {
+            "name": "Pakketgeschiedenis",
+            "data": {
+              "include_history": "Statusgeschiedenis toevoegen"
+            },
+            "data_description": {
+              "include_history": "Voegt per pakket een geschiedenisattribuut toe met elke statusupdate (tijdstip, status, oorspronkelijke tekst). Standaard uit."
+            }
+          }
+        }
+      },
+      "parcels": {
+        "title": "Pakketten beheren",
+        "data": {
+          "tracking_codes": "Trackinglinks of nummers"
+        },
+        "description": "Eén zending per regel. Plak de trackinglink uit de sms of e-mail van Danske Fragtmænd, of voer het zendingsnummer in, eventueel gevolgd door `/` en de sleutel uit die link. Met de sleutel krijg je de volledige gegevens; met alleen het nummer een kortere versie. De sleutel is hoofdlettergevoelig.",
+        "data_description": {
+          "tracking_codes": "Een trackinglink (https://trace.fragt.dk/#/trackTrace/…), NUMMER/SLEUTEL, of een zendingsnummer."
+        }
+      },
+      "settings": {
+        "title": "Instellingen",
+        "data": {
+          "delivered_filter_type": "Bezorgde pakketten: filteren op",
+          "delivered_filter_amount": "Bezorgde pakketten: aantal",
+          "include_history": "Statusgeschiedenis toevoegen"
+        }
+      }
+    },
+    "error": {
+      "invalid_tracking_code": "Dit lijkt geen Danske Fragtmænd-zendingsnummer.",
+      "unsupported_link": "Alleen de trackinglink met #/trackTrace/ wordt ondersteund. Plak die link, of voer het zendingsnummer in.",
+      "not_recognised": "Danske Fragtmænd herkent dit zendingsnummer of deze sleutel niet.",
+      "cannot_connect": "Danske Fragtmænd is niet bereikbaar. Probeer het later opnieuw.",
+      "already_tracked": "Dit pakket wordt al gevolgd."
+    }
+  },
+  "selector": {
+    "delivered_filter_type": {
+      "options": {
+        "days": "Dagen",
+        "parcels": "Aantal pakketten"
+      }
+    }
+  },
+  "services": {
+    "track_parcel": {
+      "name": "Pakket volgen",
+      "description": "Begin met het volgen van een zending via de trackinglink of het zendingsnummer van Danske Fragtmænd.",
+      "fields": {
+        "tracking_code": {
+          "name": "Trackinglink of nummer",
+          "description": "De trackinglink uit het bericht van de vervoerder, of het zendingsnummer."
+        },
+        "key": {
+          "name": "Sleutel",
+          "description": "Optioneel: de sleutel uit de trackinglink (hoofdlettergevoelig). Niet nodig als je de hele link plakt. Home Assistant bewaart de gegevens van elke serviceaanroep, de sleutel inbegrepen; voeg de zending via de integratie-opties toe als je dat niet wilt."
+        }
+      }
+    },
+    "untrack_parcel": {
+      "name": "Pakket niet meer volgen",
+      "description": "Stop met het volgen van een zending via de trackinglink of het zendingsnummer van Danske Fragtmænd.",
+      "fields": {
+        "tracking_code": {
+          "name": "Trackinglink of nummer",
+          "description": "De trackinglink of het zendingsnummer dat je niet meer wilt volgen."
+        }
+      }
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "parcel_registered": "Een pakket is geregistreerd",
+      "parcel_status_changed": "De status van een pakket is gewijzigd",
+      "parcel_delivered": "Een pakket is bezorgd",
+      "parcel_delivery_time_changed": "De verwachte bezorgtijd van een pakket is gewijzigd"
+    }
+  },
+  "entity": {
+    "button": {
+      "refresh": {
+        "name": "Verversen"
+      }
+    },
+    "calendar": {
+      "deliveries": {
+        "name": "Bezorgingen"
+      }
+    },
+    "sensor": {
+      "incoming_parcels": {
+        "name": "Inkomende pakketten",
+        "unit_of_measurement": "pakketten"
+      },
+      "next_delivery": {
+        "name": "Volgende bezorging"
+      },
+      "delivered_parcels": {
+        "name": "Bezorgde pakketten",
+        "unit_of_measurement": "pakketten"
+      },
+      "last_update": {
+        "name": "Laatste succesvolle update"
+      },
+      "parcel": {
+        "name": "Pakket {barcode}"
+      }
+    }
+  }
+}

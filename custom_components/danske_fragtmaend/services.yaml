@@ -1,0 +1,20 @@
+track_parcel:
+  fields:
+    tracking_code:
+      required: true
+      example: "FD123456"
+      selector:
+        text:
+    key:
+      required: false
+      example: "AbC1"
+      selector:
+        text:
+
+untrack_parcel:
+  fields:
+    tracking_code:
+      required: true
+      example: "FD123456"
+      selector:
+        text:
