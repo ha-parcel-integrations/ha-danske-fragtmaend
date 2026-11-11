@@ -59,7 +59,7 @@
         },
         "description": "Eén zending per regel. Plak de trackinglink uit de sms of e-mail van Danske Fragtmænd, of voer het zendingsnummer in, eventueel gevolgd door `/` en de sleutel uit die link. Met de sleutel krijg je de volledige gegevens; met alleen het nummer een kortere versie. De sleutel is hoofdlettergevoelig.",
         "data_description": {
-          "tracking_codes": "Een trackinglink (https://trace.fragt.dk/#/trackTrace/…), NUMMER/SLEUTEL, of een zendingsnummer."
+          "tracking_codes": "Een trackinglink van de website van de vervoerder, NUMMER/SLEUTEL, of een zendingsnummer."
         }
       },
       "settings": {

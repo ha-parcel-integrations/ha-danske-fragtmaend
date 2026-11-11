@@ -59,7 +59,7 @@
         },
         "description": "Én forsendelse pr. linje. Indsæt sporingslinket fra Danske Fragtmænds sms eller e-mail, eller indtast fragtbrevsnummeret, eventuelt efterfulgt af `/` og nøglen fra linket. Med nøglen får du alle oplysninger; med nummeret alene en kortere udgave. Der skelnes mellem store og små bogstaver i nøglen.",
         "data_description": {
-          "tracking_codes": "Et sporingslink (https://trace.fragt.dk/#/trackTrace/…), NUMMER/NØGLE eller et fragtbrevsnummer."
+          "tracking_codes": "Et sporingslink fra transportørens hjemmeside, NUMMER/NØGLE eller et fragtbrevsnummer."
         }
       },
       "settings": {

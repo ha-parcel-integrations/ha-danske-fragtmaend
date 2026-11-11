@@ -59,7 +59,7 @@
         },
         "description": "One consignment per line. Paste the tracking link from the Danske Fragtmænd text message or e-mail, or enter the consignment number, optionally followed by `/` and the key from that link. With the key you get the full record; the number alone gives a shorter one. The key is case-sensitive.",
         "data_description": {
-          "tracking_codes": "A tracking link (https://trace.fragt.dk/#/trackTrace/…), NUMBER/KEY, or a consignment number."
+          "tracking_codes": "A tracking link from the carrier's website, NUMBER/KEY, or a consignment number."
         }
       },
       "settings": {
