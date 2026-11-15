@@ -105,8 +105,10 @@ first), so it never moves a parcel. The run from the local depot to the receiver
 (event code `OMX`) is `out_for_delivery`, an override on top of the under-way
 band only; "ready for dispatch" before it stays `in_transit`. Delivery comes
 from the trace alone: on the real delivery the consignment state and the
-actual delivery date never changed, so `delivered_at` fell back to the
-delivery trace's time. An unmapped trace status falls back to the newest
+actual delivery date only changed days later (state `Klar` → `Laast`,
+"locked"), so `delivered_at` prefers the actual delivery date and falls back
+to the delivery trace's time. `Laast` is informational and never moves the
+status. An unmapped trace status falls back to the newest
 mappable one, and its own history entry reads `unknown`; a cancelled
 consignment is `problem`. Only consignment
 traces feed the history, never the per-colli scans. `raw_status` and history

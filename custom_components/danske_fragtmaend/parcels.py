@@ -59,7 +59,9 @@ _UNDER_WAY_OVERRIDES: dict[str, ParcelStatus] = {
 }
 
 STATE_CANCELLED = "Annulleret"
-KNOWN_STATES = frozenset({"Klar", STATE_CANCELLED})
+# "Laast" (locked) is the consignment closing some time after delivery; the
+# trace already carries the delivery, so it never moves the status.
+KNOWN_STATES = frozenset({"Klar", "Laast", STATE_CANCELLED})
 KNOWN_EVENT_CODES = frozenset({"DAT", "ANK", "KTU", "OMX", "LEV"})
 
 KNOWN_TOP_LEVEL_KEYS = frozenset(

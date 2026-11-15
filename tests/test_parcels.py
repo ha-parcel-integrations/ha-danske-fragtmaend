@@ -166,6 +166,15 @@ def test_cancelled_state_is_problem():
     assert normalize_parcel(raw)["status"] == ParcelStatus.PROBLEM
 
 
+def test_locked_state_keeps_the_trace_status(caplog):
+    raw = _with_traces(
+        trace(3, "2026-11-11T11:13:00", "LEV", "Forsendelsen er leveret hos modtager."),
+        state="Laast",
+    )
+    assert normalize_parcel(raw)["status"] == ParcelStatus.DELIVERED
+    assert "consignment state" not in caplog.text
+
+
 def test_cancelled_status_7_is_problem():
     raw = _with_traces(trace(7, "2026-11-10T06:00:00", "ANN", "Annulleret"))
     assert normalize_parcel(raw)["status"] == ParcelStatus.PROBLEM
