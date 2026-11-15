@@ -96,7 +96,11 @@ class DanskeFragtmaendApiClient:
             ) as response:
                 status = response.status
                 retry_after_header = response.headers.get("Retry-After")
-                body = await response.content.read(MAX_BODY_BYTES + 1)
+                body = bytearray()
+                async for chunk in response.content.iter_chunked(64 * 1024):
+                    body += chunk
+                    if len(body) > MAX_BODY_BYTES:
+                        break
         except (aiohttp.ClientError, TimeoutError) as err:
             raise DanskeFragtmaendApiError(type(err).__name__) from None
 
@@ -117,7 +121,7 @@ class DanskeFragtmaendApiClient:
                 "response body too large", status_code=status
             )
 
-        payload = _decode(body)
+        payload = _decode(bytes(body))
         if not key and status == 404:
             if isinstance(payload, dict) and "Message" in payload:
                 return None

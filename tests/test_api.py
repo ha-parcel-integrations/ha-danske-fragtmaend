@@ -33,7 +33,13 @@ def _session_returning(
     response = MagicMock()
     response.status = status
     response.headers = headers or {}
-    response.content.read = AsyncMock(side_effect=lambda limit: raw[:limit])
+
+    async def _chunks(_size):
+        # Small chunks, so a reader that stops after the first one fails.
+        for start in range(0, len(raw), 7):
+            yield raw[start : start + 7]
+
+    response.content.iter_chunked = MagicMock(side_effect=_chunks)
     ctx = MagicMock()
     ctx.__aenter__ = AsyncMock(return_value=response)
     ctx.__aexit__ = AsyncMock(return_value=False)
