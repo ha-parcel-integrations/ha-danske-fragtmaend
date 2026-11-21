@@ -140,6 +140,14 @@
       "next_delivery": {
         "name": "Næste levering"
       },
+      "en_route_to_pickup_point": {
+        "name": "På vej til afhentningssted",
+        "unit_of_measurement": "pakker"
+      },
+      "awaiting_pickup": {
+        "name": "Klar til afhentning",
+        "unit_of_measurement": "pakker"
+      },
       "delivered_parcels": {
         "name": "Leverede pakker",
         "unit_of_measurement": "pakker"

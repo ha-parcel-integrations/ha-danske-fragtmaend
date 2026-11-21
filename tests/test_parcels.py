@@ -350,8 +350,8 @@ def test_normalize_registered_fixture():
     assert parcel["delivered"] is False
     assert parcel["delivered_at"] is None
     assert parcel["planned_from"] == "2026-11-11T00:00:00+01:00"
-    assert parcel["planned_to"] is None
-    assert parcel["pickup"] is None
+    assert parcel["planned_to"] == "2026-11-11T23:59:59+01:00"
+    assert parcel["pickup"] is False
     assert parcel["pickup_point"] is None
     assert parcel["url"] == f"https://trace.fragt.dk/#/trackTrace/{ACTIVE_CODE}"
     assert parcel["weight"] == 46.0
@@ -546,7 +546,7 @@ def test_half_a_dot_interval_falls_back_to_expected_date():
     raw["ConsignmentNote"]["DeliveryTime"]["DotIntervalStart"] = "2026-11-11T08:00:00"
     parcel = normalize_parcel(raw)
     assert parcel["planned_from"] == "2026-11-11T00:00:00+01:00"
-    assert parcel["planned_to"] is None
+    assert parcel["planned_to"] == "2026-11-11T23:59:59+01:00"
 
 
 def test_dot_interval_of_one_instant_is_a_point_estimate():
@@ -555,7 +555,7 @@ def test_dot_interval_of_one_instant_is_a_point_estimate():
     times["DotIntervalStart"] = times["DotIntervalEnd"] = "2026-11-11T08:00:00"
     parcel = normalize_parcel(raw)
     assert parcel["planned_from"] == "2026-11-11T08:00:00+01:00"
-    assert parcel["planned_to"] is None
+    assert parcel["planned_to"] == "2026-11-11T23:59:59+01:00"
 
 
 def test_never_planned_once_delivered():
@@ -588,14 +588,16 @@ def test_weight_is_none_when_every_value_is_null():
 def test_pickup_point_is_the_parcelshop_name():
     parcel = normalize_parcel(pickup_sample())
     assert parcel["pickup_point"] == "Example Parcelshop"
-    assert parcel["pickup"] is None
+    assert parcel["pickup"] is True
     assert parcel["status"] == ParcelStatus.IN_TRANSIT
 
 
-def test_pickup_point_cleared_once_delivered():
+def test_pickup_point_kept_once_delivered():
     raw = delivered_sample()
     raw["Parcelshop"] = pickup_sample()["Parcelshop"]
-    assert normalize_parcel(raw)["pickup_point"] is None
+    parcel = normalize_parcel(raw)
+    assert parcel["pickup"] is True
+    assert parcel["pickup_point"] == "Example Parcelshop"
 
 
 def test_blank_sender_name_is_none():

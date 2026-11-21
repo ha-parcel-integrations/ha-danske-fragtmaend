@@ -38,10 +38,11 @@ you act in one of these areas:
 - **Events and `_known_state` are built from the unfiltered delivered list.**
   The "keep N days / N parcels" option only trims `coordinator.delivered`; a
   parcel it leaves out must still fire `_parcel_delivered`.
-- **The optional pickup-point summaries are a pair.** A carrier that can tell
-  a parcel is destined for a pickup point exposes
-  `en_route_to_pickup_point` for `pickup is true` before it arrives; one that
-  can reach `ParcelStatus.AT_PICKUP_POINT` also exposes `awaiting_pickup`.
+- **The pickup-point summaries are a pair.** A carrier that can deliver to a
+  pickup point or locker exposes both `en_route_to_pickup_point` and
+  `awaiting_pickup`, even before a real parcel has shown the status or flag
+  (they read 0 until then; record it in `PENDING_*`). A carrier without pickup
+  points exposes neither and keeps `pickup` constantly False.
   See *Parcel contract* in `CONVENTIONS.md`. Say "pickup point", not
   "ServicePoint"/"parcel shop"/"locker", for the generic concept; the
   example carrier demonstrates both canonical sensors.
@@ -122,21 +123,30 @@ name only), a non-JSON or otherwise unexpected reply, a number mismatch, and
 a refused key on refresh.
 
 **Fields that are `None` on purpose** (agrees with `CAPABILITIES`):
-`receiver` (personal, never published), `pickup` (no reliable signal),
-`dimensions` (the carrier leaves them empty and their unit is unknown).
-`sender` is the sender's name from a keyed reply. `weight` is the sum of the
-goods' weights in kg. `planned_from`/`planned_to` are the booked delivery slot
-when both ends are set, else the expected delivery date with no end.
-`pickup_point` is the parcelshop name while not delivered, and stays in
-`PENDING_CAPABILITIES` until a real parcel shows one.
+`receiver` (personal, never published) and `dimensions` (the carrier leaves
+them empty and their unit is unknown). `sender` is the sender's name from a
+keyed reply. `weight` is the sum of the goods' weights in kg.
 
-**No pickup-point summaries.** No Danske Fragtmænd code is known to reach
-`at_pickup_point`, and `pickup` is never set, so this repo deliberately has
-neither `awaiting_pickup` nor `en_route_to_pickup_point`. Add both once a real
-code maps there. The expected delivery date has no time, so `planned_from`
-is midnight and an `out_for_delivery` consignment polls on the hot tier until
-a newer update arrives (the template's hot tier has no end; a consignment
-stuck on that event keeps polling hot).
+**Delivery window.** The booked slot (`DotIntervalStart`/`End`) when both ends
+are set, else the expected delivery date. Both go through `planned_window` with
+`CARRIER_TZ`, so a single moment or a date ends at 23:59:59 local that day and
+the calendar shows a date-only estimate as an all-day event. The window is
+emptied for `delivered`, `at_pickup_point` and `returning`.
+
+**Pickup.** `pickup` is true when the consignment has a parcelshop name (a
+structured field), and stays true after delivery and for the other
+statuses; `pickup_point` is that name, in every status, else `None`. Whether
+`Parcelshop` always means the destination (not a transit shop) is unconfirmed,
+since the block has only been seen empty: `pickup_point` stays in
+`PENDING_CAPABILITIES`.
+
+**Pickup-point summaries.** The carrier can deliver to a parcelshop, so both
+`en_route_to_pickup_point` and `awaiting_pickup` exist. No code is known to
+reach `at_pickup_point`, so `awaiting_pickup` reads 0 until one is seen. The
+expected delivery date has no time, so on the delivery day `planned_from` is
+midnight and an `out_for_delivery` consignment polls on the hot tier until a
+newer update arrives (the template's hot tier has no end; a consignment stuck
+on that event keeps polling hot).
 
 **Out of scope on purpose:** the carrier's other lookups and its ETA call,
 anything that writes (notification subscriptions), downloads, the staff

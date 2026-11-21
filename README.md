@@ -37,7 +37,7 @@ A custom Home Assistant integration that tracks your [Danske Fragtmænd](https:/
 
 - Track any number of Danske Fragtmænd consignments by tracking link or consignment number — no account needed
 - Per-parcel sensor with the canonical status (`registered` / `in_transit` / `out_for_delivery` / `delivered` / …), the carrier's own status text (in Danish, as the carrier writes it), the expected delivery date or booked time slot, the weight and a tracking deep-link
-- Summary sensors: incoming parcels, next delivery, recently delivered parcels
+- Summary sensors: incoming parcels, next delivery, parcels en route to a pickup point, parcels awaiting pickup, recently delivered parcels
 - Read-only **Deliveries** calendar with the expected delivery windows
 - `danske_fragtmaend.track_parcel` / `danske_fragtmaend.untrack_parcel` services, so a dashboard button can add a parcel
 - Events + device triggers for no-code automations (parcel registered, status changed, delivered, delivery time changed)
@@ -125,6 +125,8 @@ Standard HA removal applies: **Settings → Devices & Services → Danske Fragtm
 | `sensor.danske_fragtmaend_incoming_parcels` | Number of active tracked parcels, full list under the `parcels` attribute |
 | `sensor.danske_fragtmaend_parcel_<code>` | One per tracked parcel; state is the canonical status, attributes carry the full normalised parcel |
 | `sensor.danske_fragtmaend_next_delivery` | Earliest expected delivery moment across all active parcels |
+| `sensor.danske_fragtmaend_en_route_to_pickup_point` | Active parcels whose route ends at a parcelshop and that have not arrived there yet |
+| `sensor.danske_fragtmaend_awaiting_pickup` | Active parcels waiting at a parcelshop (stays 0 until the carrier reports a code for it) |
 | `sensor.danske_fragtmaend_delivered_parcels` | Recently delivered parcels (see the retention option) |
 | `calendar.danske_fragtmaend_deliveries` | Read-only calendar of expected deliveries, no extra API calls |
 | `sensor.danske_fragtmaend_last_successful_update` | Diagnostic: when Danske Fragtmænd was last polled successfully |
@@ -144,7 +146,7 @@ The `status` field is the carrier-agnostic enum shared by the whole integration 
 | `problem` | Danske Fragtmænd reports an error, or the consignment was cancelled |
 | `unknown` | Not found yet, or a status we have not mapped yet |
 
-An information-only update from the carrier keeps the status the consignment already had. `at_pickup_point` and `returning` are not reported: no Danske Fragtmænd code for them is known yet.
+An information-only update from the carrier keeps the status the consignment already had. `at_pickup_point` and `returning` are not reported yet: no Danske Fragtmænd code for them is known. A consignment with a parcelshop is marked as a pickup parcel from the start.
 
 The carrier's own text is always available as `raw_status`. Danske Fragtmænd writes it in Danish whatever language you use, and it is shown as written.
 
