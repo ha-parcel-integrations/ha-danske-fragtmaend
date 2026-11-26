@@ -40,6 +40,7 @@ A custom Home Assistant integration that tracks your [Danske Fragtmænd](https:/
 - Summary sensors: incoming parcels, next delivery, parcels en route to a pickup point, parcels awaiting pickup, recently delivered parcels
 - Read-only **Deliveries** calendar with the expected delivery windows
 - `danske_fragtmaend.track_parcel` / `danske_fragtmaend.untrack_parcel` services, so a dashboard button can add a parcel
+- A `contents` field on every parcel, set in your own words with the `danske_fragtmaend.update_contents` service or the `contents` field of `danske_fragtmaend.track_parcel`; it titles the calendar event and shows on the next-delivery sensor
 - Events + device triggers for no-code automations (parcel registered, status changed, delivered, delivery time changed)
 - Opt-in per-parcel status history
 - Manual refresh button and a diagnostic last-update sensor
@@ -167,8 +168,9 @@ Every payload is the full normalised parcel plus the hub's `device_id`. Events a
 
 | Service | Fields | Description |
 |---|---|---|
-| `danske_fragtmaend.track_parcel` | `tracking_code` (link or number), optional `key` | Start tracking a consignment, after one lookup. A call without a key for a consignment that is already tracked changes nothing, so it never drops a saved key. Home Assistant records the data of every service call, key included |
+| `danske_fragtmaend.track_parcel` | `tracking_code` (link or number), optional `key`, optional `contents` | Start tracking a consignment, after one lookup, optionally noting what is in it. A call without a key for a consignment that is already tracked changes nothing, so it never drops a saved key. Home Assistant records the data of every service call, key included |
 | `danske_fragtmaend.untrack_parcel` | `tracking_code` (link or number) | Stop tracking a consignment |
+| `danske_fragtmaend.update_contents` | `tracking_code` (link or number), `contents` (optional) | Set what is in a parcel, tracked or not; an empty `contents` clears it. It titles the calendar event and shows on the next-delivery sensor |
 
 ## Examples
 

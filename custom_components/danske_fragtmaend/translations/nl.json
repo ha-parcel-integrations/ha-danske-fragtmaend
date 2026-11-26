@@ -99,6 +99,10 @@
         "key": {
           "name": "Sleutel",
           "description": "Optioneel: de sleutel uit de trackinglink (hoofdlettergevoelig). Niet nodig als je de hele link plakt. Home Assistant bewaart de gegevens van elke serviceaanroep, de sleutel inbegrepen; voeg de zending via de integratie-opties toe als je dat niet wilt."
+        },
+        "contents": {
+          "name": "Inhoud",
+          "description": "Wat er in het pakket zit, in je eigen woorden. Opnieuw aanroepen voor een gevolgd pakket vervangt de inhoud; een lege tekst wist deze."
         }
       }
     },
@@ -109,6 +113,20 @@
         "tracking_code": {
           "name": "Trackinglink of nummer",
           "description": "De trackinglink of het zendingsnummer dat je niet meer wilt volgen."
+        }
+      }
+    },
+    "update_contents": {
+      "name": "Pakketinhoud bijwerken",
+      "description": "Stel in wat er in een pakket zit, in je eigen woorden, voor een trackingcode. Een lege tekst wist de inhoud.",
+      "fields": {
+        "tracking_code": {
+          "name": "Trackinglink of nummer",
+          "description": "De trackinglink uit het bericht van de vervoerder, of het zendingsnummer."
+        },
+        "contents": {
+          "name": "Inhoud",
+          "description": "Wat er in het pakket zit, in je eigen woorden. Een lege tekst wist de inhoud."
         }
       }
     }

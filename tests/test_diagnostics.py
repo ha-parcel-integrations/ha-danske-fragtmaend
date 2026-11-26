@@ -70,6 +70,21 @@ def _entry(parcels: list[dict], data: list[dict]) -> MagicMock:
     return entry
 
 
+def test_contents_is_redacted():
+    assert "contents" in TO_REDACT
+
+
+async def test_diagnostics_redact_the_contents_text(hass):
+    parcel = normalize_parcel(pickup_sample(), tracking_code=ACTIVE_CODE)
+    parcel["contents"] = "Running shoes"
+    entry = _entry([], [parcel])
+
+    result = await async_get_config_entry_diagnostics(hass, entry)
+
+    assert result["incoming"][0]["contents"] == REDACTED
+    assert "Running shoes" not in json.dumps(result, default=str)
+
+
 def test_every_field_the_plan_names_is_redacted():
     assert PLAN_FIELDS <= TO_REDACT
 

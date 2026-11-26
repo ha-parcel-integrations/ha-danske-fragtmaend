@@ -551,6 +551,7 @@ def normalize_parcel(
         "barcode": barcode,
         "sender": _name(note.get("Sender")),
         "receiver": None,
+        "contents": None,
         "status": status,
         "raw_status": _event_text(walked[-1][0]) if walked else None,
         "delivered": delivered,

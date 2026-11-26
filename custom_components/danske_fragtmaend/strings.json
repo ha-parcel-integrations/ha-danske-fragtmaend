@@ -99,6 +99,10 @@
         "key": {
           "name": "Key",
           "description": "Optional: the key from the tracking link (case-sensitive). Not needed when you paste the whole link. Home Assistant records the data of every service call, key included; add the consignment through the integration options if you don't want that."
+        },
+        "contents": {
+          "name": "Contents",
+          "description": "What is in the parcel, in your own words. Calling this again for a tracked parcel replaces it; an empty text clears it."
         }
       }
     },
@@ -109,6 +113,20 @@
         "tracking_code": {
           "name": "Tracking link or number",
           "description": "The tracking link or consignment number to stop tracking."
+        }
+      }
+    },
+    "update_contents": {
+      "name": "Update parcel contents",
+      "description": "Set what is in a parcel, in your own words, for a tracking code. An empty text clears it.",
+      "fields": {
+        "tracking_code": {
+          "name": "Tracking link or number",
+          "description": "The tracking link from the carrier's message, or the consignment number."
+        },
+        "contents": {
+          "name": "Contents",
+          "description": "What is in the parcel, in your own words. An empty text clears it."
         }
       }
     }
